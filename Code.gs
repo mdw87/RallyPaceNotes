@@ -11,7 +11,7 @@ function onOpen() {
 }
 
 function generatePaceNotes() {
-  var LINES_PER_PAGE = 10;
+  var LINES_PER_PAGE = 7;
 
   // Style for left align
   var leftStyle = {};
@@ -43,7 +43,7 @@ function generatePaceNotes() {
   noteStyle[DocumentApp.Attribute.VERTICAL_ALIGNMENT] = 
     DocumentApp.VerticalAlignment.CENTER;
   noteStyle[DocumentApp.Attribute.FONT_FAMILY] = 'Calibri';
-  noteStyle[DocumentApp.Attribute.FONT_SIZE] = 28;
+  noteStyle[DocumentApp.Attribute.FONT_SIZE] = 36;
   noteStyle[DocumentApp.Attribute.BOLD] = true;
   
   // Style for the distance
@@ -78,6 +78,10 @@ function generatePaceNotes() {
   var outputDoc = DocumentApp.create(rallyName + " | " + "SS" + stageNumber + " | " + stageName);
   var outputBody = outputDoc.getBody();
   var docUrl = outputDoc.getUrl();
+
+  // Set margin size
+  outputBody.setMarginTop(20);
+  outputBody.setMarginBottom(20);
   
   // Set output cell
   var output_cell = sheet.getRange("D2");
@@ -114,21 +118,28 @@ function generatePaceNotes() {
     ['', '', ''],
     ['', '', ''],
     ['', '', ''],
-    ['', '', ''],
-    ['', '', ''],
-    ['', '', ''],
     ['', '', '']
   ];
   var outputTable = outputBody.appendTable(cells);
   outputTable.setColumnWidth(0, 50);
   outputTable.setColumnWidth(2, 60);
-  
+
   //Go row by row and print the notes
   var currRow = 0;
   for (var i = 8; i <= sheet.getLastRow(); i++) {
+    //set the row height
+    var row = outputTable.getRow(currRow);
+    row.setMinimumHeight(85);
     var cell = outputTable.getCell(currRow, 1);
     var distCell = outputTable.getCell(currRow, 0);
     var remDistCell = outputTable.getCell(currRow, 2);
+    //vertically align everything in the center
+    cell.setVerticalAlignment(DocumentApp.VerticalAlignment.CENTER);
+    distCell.setVerticalAlignment(DocumentApp.VerticalAlignment.CENTER);
+    remDistCell.setVerticalAlignment(DocumentApp.VerticalAlignment.CENTER);
+    //center align distances
+    distCell.setHorizontalAlignment(DocumentApp.HorizontalAlignment.CENTER);
+    remDistCell.setHorizontalAlignment(DocumentApp.HorizontalAlignment.CENTER);
     //remove blank text
     cell.removeChild(cell.getChild(0));
     distCell.removeChild(distCell.getChild(0));
@@ -150,10 +161,10 @@ function generatePaceNotes() {
     distPar.setAttributes(distStyle);
     remDistPar.setAttributes(distStyle);
     currRow = currRow + 1;
-    //after row 9 is filled out, create new page
-    if (currRow > 9) {
+    //after the last row is filled out, create new page
+    if (currRow > LINES_PER_PAGE - 1) {
       //fill out the 'first call of next page'
-      var nextCell = outputTable.getCell(10, 1);
+      var nextCell = outputTable.getCell(LINES_PER_PAGE, 1);
       nextCell.removeChild(nextCell.getChild(0));
       var nextPar = nextCell.appendParagraph(sheet.getRange("B" + (i + 1)).getValue());
       nextPar.setAttributes(nextStyle);
@@ -180,4 +191,3 @@ function generatePaceNotes() {
   // Update the output cell with link
   output_cell.setValue(docUrl);
 }
-
