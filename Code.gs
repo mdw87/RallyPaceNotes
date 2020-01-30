@@ -32,7 +32,7 @@ function generatePaceNotes() {
   var titlePageStyle = {};
   titlePageStyle[DocumentApp.Attribute.HORIZONTAL_ALIGNMENT] =
     DocumentApp.HorizontalAlignment.CENTER;
-  titlePageStyle[DocumentApp.Attribute.FONT_FAMILY] = 'Calibri';
+  titlePageStyle[DocumentApp.Attribute.FONT_FAMILY] = 'Arial';
   titlePageStyle[DocumentApp.Attribute.FONT_SIZE] = 36;
   titlePageStyle[DocumentApp.Attribute.BOLD] = true;
   
@@ -42,17 +42,17 @@ function generatePaceNotes() {
     DocumentApp.HorizontalAlignment.LEFT;
   noteStyle[DocumentApp.Attribute.VERTICAL_ALIGNMENT] = 
     DocumentApp.VerticalAlignment.CENTER;
-  noteStyle[DocumentApp.Attribute.FONT_FAMILY] = 'Calibri';
-  noteStyle[DocumentApp.Attribute.FONT_SIZE] = 36;
+  noteStyle[DocumentApp.Attribute.FONT_FAMILY] = 'Arial';
+  noteStyle[DocumentApp.Attribute.FONT_SIZE] = 32;
   noteStyle[DocumentApp.Attribute.BOLD] = true;
   
   // Style for the distance
   var distStyle = {};
   distStyle[DocumentApp.Attribute.HORIZONTAL_ALIGNMENT] =
-    DocumentApp.HorizontalAlignment.LEFT;
+    DocumentApp.HorizontalAlignment.CENTER;
   distStyle[DocumentApp.Attribute.VERTICAL_ALIGNMENT] = 
     DocumentApp.VerticalAlignment.CENTER;
-  distStyle[DocumentApp.Attribute.FONT_FAMILY] = 'Calibri';
+  distStyle[DocumentApp.Attribute.FONT_FAMILY] = 'Arial';
   distStyle[DocumentApp.Attribute.FONT_SIZE] = 20;
   distStyle[DocumentApp.Attribute.BOLD] = true;
   
@@ -61,7 +61,7 @@ function generatePaceNotes() {
   nextStyle[DocumentApp.Attribute.HORIZONTAL_ALIGNMENT] =
     DocumentApp.HorizontalAlignment.RIGHT;
   nextStyle[DocumentApp.Attribute.BOLD] = true;
-  nextStyle[DocumentApp.Attribute.FONT_SIZE] = 10;
+  nextStyle[DocumentApp.Attribute.FONT_SIZE] = 18;
   
   var sheet = SpreadsheetApp.getActive();
   var title = sheet.getName();
@@ -82,6 +82,8 @@ function generatePaceNotes() {
   // Set margin size
   outputBody.setMarginTop(20);
   outputBody.setMarginBottom(20);
+  outputBody.setMarginLeft(20);
+  outputBody.setMarginRight(20);
   
   // Set output cell
   var output_cell = sheet.getRange("D2");
@@ -137,9 +139,6 @@ function generatePaceNotes() {
     cell.setVerticalAlignment(DocumentApp.VerticalAlignment.CENTER);
     distCell.setVerticalAlignment(DocumentApp.VerticalAlignment.CENTER);
     remDistCell.setVerticalAlignment(DocumentApp.VerticalAlignment.CENTER);
-    //center align distances
-    distCell.setHorizontalAlignment(DocumentApp.HorizontalAlignment.CENTER);
-    remDistCell.setHorizontalAlignment(DocumentApp.HorizontalAlignment.CENTER);
     //remove blank text
     cell.removeChild(cell.getChild(0));
     distCell.removeChild(distCell.getChild(0));
